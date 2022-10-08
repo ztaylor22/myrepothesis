@@ -17,12 +17,33 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
-```{r cars}
+```{r}
 getSymbols("TSLA", from="2022-7-27", to="2022-9-4", periodicity="daily", src="yahoo")
 #quantmod's getSymbols function only works with daily, weekly, and monthly
-chartSeries(AAPL, subset="last 6 months", theme=chartTheme("white"))
-addMACD()
+chartSeries(TSLA, theme=chartTheme("white"))
+#addMACD() What does this line do?
 summary(cars)
+```
+```{r}
+
+#ticker <- "GM"
+#date_from <- "2022-7-27"
+#date_to <- "2022-9-4"
+#frequency="daily"
+
+StockDataIteration <- function(ticker, date_from, date_to, frequency)
+{
+  getSymbols(ticker, from=date_from, to=date_to, periodicity=frequency, src="yahoo")
+  chart <- chartSeries(ticker, theme=chartTheme("white"))
+  return(chart)
+
+}
+```
+
+```{r}
+StockDataIteration("GM","2022-7-27","2022-9-4","daily")
+#Need to do some research on writing functions in R
+#Need to then create a for loop where all of this data is added to a datatable as a new column
 ```
 
 ## Including Plots
