@@ -29,7 +29,7 @@ summary(cars)
 #ticker <- "GM"
 #date_from <- "2022-7-27"
 #date_to <- "2022-9-4"
-#frequency="daily"
+#frequency <- "daily"
 
 StockDataIteration <- function(ticker, date_from, date_to, frequency)
 {
