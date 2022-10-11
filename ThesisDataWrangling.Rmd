@@ -9,6 +9,32 @@ knitr::opts_chunk$set(echo = TRUE)
 
 install.packages("quantmod")
 library(quantmod)
+library(ggplot2)
+library(dplyr)
+```
+
+
+```{r}
+
+stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
+start_date <- "2022-7-27"
+end_date <- "2022-9-4"
+master_df <- NULL
+for (idx in seq(length(stock_list))){
+  stock_index = stock_list[idx]
+  getSymbols(stock_index, verbose = TRUE, src = "yahoo", 
+             from=start_date,to=end_date, frequency="daily")
+  temp_df = as.data.frame(get(stock_index))
+  temp_df$Date = row.names(temp_df)
+  temp_df$Index = stock_index
+  row.names(temp_df) = NULL
+  colnames(temp_df) = c("Open", "High", "Low", "Close", 
+                        "Volume", "Adjusted", "Date", "Index")
+  temp_df = temp_df[c("Date", "Index", "Open", "High", 
+                      "Low", "Close", "Volume")]
+  master_df = rbind(master_df, temp_df)
+}
+master_df
 ```
 
 ## R Markdown
@@ -46,12 +72,6 @@ StockDataIteration("GM","2022-7-27","2022-9-4","daily")
 #Need to then create a for loop where all of this data is added to a datatable as a new column
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
