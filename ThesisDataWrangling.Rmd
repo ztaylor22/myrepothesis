@@ -18,7 +18,6 @@ library(dplyr)
 
 
 ```{r}
-
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
 from_date <- "2022-7-27"
 to_date <- "2022-9-4"
@@ -38,11 +37,66 @@ for (idx in seq(length(stock_list))){
     mutate(Difference=Open-Close) %>%
     mutate(PercentChange=Difference/Close)
   
-#I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df
-  
+
   master_df = rbind(master_df, temp_df)
+  
+  
+#I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df. This is currently a very inefficient way to do that.
+
+  if (stock_list[idx] == "TSLA"){
+    TSLA_df <- temp_df
+    TSLA_df <- select(Date, Open, Close, Difference, PercentChange)
+    colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_CLose','TSLA_Difference','TSLA_PercentChange')
+  }
+  if (stock_list[idx] == "TM"){
+    TM_df <- temp_df
+    TM_df <- select(Date, Open, Close, Difference, PercentChange)
+    colnames(TM_df) <- c('Date','TM_Open','TM_CLose','TM_Difference','TM_PercentChange')
+  }
+  if (stock_list[idx] == "POAHY"){
+    POAHY_df <- temp_df
+  }
+  if (stock_list[idx] == "VWAPY"){
+    VWAPY_df <- temp_df
+  }
+  if (stock_list[idx] == "MBGYY"){
+    MBGYY_df <- temp_df
+  }
+  if (stock_list[idx] == "GM"){
+    GM_df <- temp_df
+  }
+  if (stock_list[idx] == "F"){
+    F_df <- temp_df
+  }
+  if (stock_list[idx] == "BMWYY"){
+    BMWYY_df <- temp_df
+  }
+  if (stock_list[idx] == "STLA"){
+    STLA_df <- temp_df
+  }
+  if (stock_list[idx] == "HMC"){
+    HMC_df <- temp_df
+  }
+  if (stock_list[idx] == "RACE"){
+    RACE_df <- temp_df
+  }
+  if (stock_list[idx] == "RIVN"){
+    RIVN_df <- temp_df
+  }
+  if (stock_list[idx] == "HYMTF"){
+    HYMTF_df <- temp_df
+  }
+  if (stock_list[idx] == "NIO"){
+    NIO_df <- temp_df
+  }
+  if (stock_list[idx] == "LCID"){
+    LCID_df <- temp_df
+  }
+  if (stock_list[idx] == "TTM"){
+    TTM_df <- temp_df
+  }
 }
-master_df
+TSLA_df
 ```
 
 #Make a data table with each comapny and their close price
