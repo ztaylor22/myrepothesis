@@ -1,14 +1,17 @@
 ---
 title: "ThesisDataWrangling"
 output: html_document
-date: '2022-10-05'
+date: '2022-10-10'
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-install.packages("quantmod")
+#install.packages("quantmod")
 library(quantmod)
+```
+
+```{r setup, include=FALSE}
 library(ggplot2)
 library(dplyr)
 ```
@@ -31,11 +34,51 @@ for (idx in seq(length(stock_list))){
   colnames(temp_df) = c("Open", "High", "Low", "Close", 
                         "Volume", "Adjusted", "Date", "Index")
   temp_df = temp_df[c("Date", "Index", "Open", "High", 
-                      "Low", "Close", "Volume")]
+                      "Low", "Close", "Volume", "Adjusted")]
+  
+  temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
+    mutate(Difference=Open-Close) %>%
+    mutate(PercentChange=Difference/Close)
+  
+#I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df
+  
   master_df = rbind(master_df, temp_df)
 }
 master_df
 ```
+
+#Make a data table with each comapny and their close price
+#Then combine the tables so you have one big table with y axis being the data and x axis being close price
+
+#Then do the same as the above two but have the x axis be change in price
+
+#Work with Liv to make this code more efficient
+
+
+
+```{r}
+#Adding Difference & Percent Change to master_df 
+master_df <- master_df %>% 
+  mutate(Difference=Open-Close) %>%
+  mutate(PercentChange=Difference/Close)
+master_df
+```
+```{r}
+TSLA_df <- filter(master_df, Index=="TSLA") %>%
+  select(Date, Open, Close, PercentChange)
+colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_CLose','TSLA_PercentChange')
+TSLA_df
+```
+
+
+```{r}
+graph1 <- ggplot(master_df, aes(x=Date, y=Close)) +
+  geom_line() + 
+  xlab("")
+graph1
+```
+
+
 
 ## R Markdown
 
