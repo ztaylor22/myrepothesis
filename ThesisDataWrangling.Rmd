@@ -22,6 +22,7 @@ stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "ST
 from_date <- "2022-7-27"
 to_date <- "2022-9-4"
 frequency <- "daily"
+
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
   getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date, frequency=frequency)
@@ -36,11 +37,10 @@ for (idx in seq(length(stock_list))){
   temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
     mutate(Difference=Open-Close) %>%
     mutate(PercentChange=Difference/Close)
-  
-
   master_df = rbind(master_df, temp_df)
   
 #I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df. This is currently a very inefficient way to do that.
+#This is not necessary...just use groupby/filtering on the index before piping to ggplot
   if (stock_list[idx] == "TSLA"){
     TSLA_df <- temp_df
     TSLA_df %>% select(Date, Open, Close, Difference, PercentChange)
@@ -67,7 +67,7 @@ TSLA_df
 ```
 
 ```{r}
-ggplot(TSLA_df, aes(x=Date,y=TSLA_Close)) + geom_point() + labs(x="Date",y="Close")
+ggplot(TM_df, aes(x=Date,y=TM_PercentChange)) + geom_point() + labs(x="Date",y="Close")
 ```
 
 ```{r}
