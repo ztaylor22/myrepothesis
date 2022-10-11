@@ -40,7 +40,6 @@ for (idx in seq(length(stock_list))){
 
   master_df = rbind(master_df, temp_df)
   
-  
 #I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df. This is currently a very inefficient way to do that.
 
   if (stock_list[idx] == "TSLA"){
@@ -53,6 +52,7 @@ for (idx in seq(length(stock_list))){
     TM_df <- select(Date, Open, Close, Difference, PercentChange)
     colnames(TM_df) <- c('Date','TM_Open','TM_CLose','TM_Difference','TM_PercentChange')
   }
+  #I would like to automate this so I don't need to hard code each if statement...
   if (stock_list[idx] == "POAHY"){
     POAHY_df <- temp_df
   }
