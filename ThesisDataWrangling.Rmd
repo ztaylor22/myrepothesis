@@ -20,21 +20,19 @@ library(dplyr)
 ```{r}
 
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
-start_date <- "2022-7-27"
-end_date <- "2022-9-4"
-master_df <- NULL
+from_date <- "2022-7-27"
+to_date <- "2022-9-4"
+frequency <- "daily"
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
-  getSymbols(stock_index, verbose = TRUE, src = "yahoo", 
-             from=start_date,to=end_date, frequency="daily")
+  getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date, frequency=frequency)
   temp_df = as.data.frame(get(stock_index))
   temp_df$Date = row.names(temp_df)
   temp_df$Index = stock_index
   row.names(temp_df) = NULL
   colnames(temp_df) = c("Open", "High", "Low", "Close", 
                         "Volume", "Adjusted", "Date", "Index")
-  temp_df = temp_df[c("Date", "Index", "Open", "High", 
-                      "Low", "Close", "Volume", "Adjusted")]
+  temp_df = temp_df[c("Date", "Index", "Open","Close")]
   
   temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
     mutate(Difference=Open-Close) %>%
