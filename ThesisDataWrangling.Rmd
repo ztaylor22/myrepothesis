@@ -44,12 +44,12 @@ for (idx in seq(length(stock_list))){
   if (stock_list[idx] == "TSLA"){
     TSLA_df <- temp_df
     TSLA_df %>% select(Date, Open, Close, Difference, PercentChange)
-    colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_CLose','TSLA_Difference','TSLA_PercentChange')
+    colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_Close','TSLA_Difference','TSLA_PercentChange')
   }
   if (stock_list[idx] == "TM"){
     TM_df <- temp_df
-    TM_df <- select(Date, Open, Close, Difference, PercentChange)
-    colnames(TM_df) <- c('Date','TM_Open','TM_CLose','TM_Difference','TM_PercentChange')
+    TM_df %>% select(Date, Open, Close, Difference, PercentChange)
+    colnames(TM_df) <- c('Date','TM_Open','TM_Close','TM_Difference','TM_PercentChange')
   }
   #I would like to automate this so I don't need to hard code each if statement...
 }
@@ -63,27 +63,19 @@ master_df
 
 #Work with Liv to make this code more efficient
 ```{r}
-
 TSLA_df
 ```
 
 ```{r}
-#Could the date format be wrong?
-ggplot(master_df, aes(x=Date,y=Close)) + geom_line(aes(color=Index))
-+   geom_point(aes(color=Index,shape=Index)) + labs(x="Date",y="Close")
-```
-```{r}
-TSLA_df <- filter(master_df, Index=="TSLA") %>%
-  select(Date, Open, Close, PercentChange)
-colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_CLose','TSLA_PercentChange')
-TSLA_df
+ggplot(TSLA_df, aes(x=Date,y=TSLA_Close)) + geom_point() + labs(x="Date",y="Close")
 ```
 
-
 ```{r}
-ggplot(TSLA_df, aes(x=Date,y=TSLA_Close)) + geom_point()
-#Maybe Date is not in a readable format
+ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + labs(x="Date",y="Close")
+#Ideas: add a vertical line for the dates of interest
+#Color code companies based on their group: Group 1, Group 2, Group 3
 ```
+
 
 ```{r}
 
