@@ -55,6 +55,7 @@ master_df
 
 
 ```{r}
+#Could the date format be wrong?
 ggplot(master_df, aes(x=Date,y=Close)) + geom_line(aes(color=Index))
 +   geom_point(aes(color=Index,shape=Index)) + labs(x="Date",y="Close")
 ```
