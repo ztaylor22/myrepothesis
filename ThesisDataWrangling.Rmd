@@ -14,6 +14,8 @@ library(quantmod)
 ```{r setup, include=FALSE}
 library(ggplot2)
 library(dplyr)
+library(tidyr)
+library(lubridate)
 ```
 
 
@@ -38,20 +40,6 @@ for (idx in seq(length(stock_list))){
     mutate(Difference=Open-Close) %>%
     mutate(PercentChange=Difference/Close)
   master_df = rbind(master_df, temp_df)
-  
-#I want to add a line of code here that creates a unique df for each company as the for loop iterates through each stock_list index. EX:TSLA_df, TM_df, POAHY_df. This is currently a very inefficient way to do that.
-#This is not necessary...just use groupby/filtering on the index before piping to ggplot
-  if (stock_list[idx] == "TSLA"){
-    TSLA_df <- temp_df
-    TSLA_df %>% select(Date, Open, Close, Difference, PercentChange)
-    colnames(TSLA_df) <- c('Date','TSLA_Open','TSLA_Close','TSLA_Difference','TSLA_PercentChange')
-  }
-  if (stock_list[idx] == "TM"){
-    TM_df <- temp_df
-    TM_df %>% select(Date, Open, Close, Difference, PercentChange)
-    colnames(TM_df) <- c('Date','TM_Open','TM_Close','TM_Difference','TM_PercentChange')
-  }
-  #I would like to automate this so I don't need to hard code each if statement...
 }
 master_df
 ```
@@ -63,11 +51,9 @@ master_df
 
 #Work with Liv to make this code more efficient
 ```{r}
-TSLA_df
-```
-
-```{r}
-ggplot(TM_df, aes(x=Date,y=TM_PercentChange)) + geom_point() + labs(x="Date",y="Close")
+master_df$Date <- as.Date(master_df$Date, format="%m-%d") #To convert Date column from characters to dates 
+#master_df$Date<-format(master_df$Date, format="%m-%d") #To remove year from date column
+master_df
 ```
 
 ```{r}
