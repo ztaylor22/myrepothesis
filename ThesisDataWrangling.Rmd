@@ -24,7 +24,7 @@ stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "ST
 from_date <- "2022-7-27"
 to_date <- "2022-9-4"
 frequency <- "daily"
-
+master_df = NULL
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
   getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date, frequency=frequency)
@@ -51,8 +51,9 @@ master_df
 
 #Work with Liv to make this code more efficient
 ```{r}
-master_df$Date <- as.Date(master_df$Date, format="%m-%d") #To convert Date column from characters to dates 
-#master_df$Date<-format(master_df$Date, format="%m-%d") #To remove year from date column
+master_df$Date <- as.Date(master_df$Date) #To convert Date column from characters to dates 
+master_df$Date<-format(master_df$Date, format="%m-%d") #To remove year from date column
+#If the above doesn't work, I could just create a new chr column for visual purposes that is %m-%d and keep date as %m-%d-%y
 master_df
 ```
 
