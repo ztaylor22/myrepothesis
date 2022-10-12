@@ -41,19 +41,14 @@ for (idx in seq(length(stock_list))){
     mutate(PercentChange=Difference/Close)
   master_df = rbind(master_df, temp_df)
 }
-master_df
 ```
 
-#Make a data table with each comapny and their close price
-#Then combine the tables so you have one big table with y axis being the data and x axis being close price
-
-#Then do the same as the above two but have the x axis be change in price
-
-#Work with Liv to make this code more efficient
 ```{r}
-master_df$Date <- as.Date(master_df$Date) #To convert Date column from characters to dates 
-master_df$Date<-format(master_df$Date, format="%m-%d") #To remove year from date column
-#If the above doesn't work, I could just create a new chr column for visual purposes that is %m-%d and keep date as %m-%d-%y
+#Cleaning up the dates column
+master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
+master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
+master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
+
 master_df
 ```
 
