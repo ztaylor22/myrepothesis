@@ -18,12 +18,20 @@ library(tidyr)
 library(lubridate)
 ```
 
-
 ```{r}
-stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
+#Fixed Inputs
+stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY")
 from_date <- "2022-7-27"
 to_date <- "2022-9-4"
 frequency <- "daily"
+
+TwoModels <- c("TSLA","GM","F")
+OneModel <- c("VWAPY","NSANY")
+ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
+```
+
+
+```{r}
 master_df = NULL
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
@@ -48,6 +56,12 @@ for (idx in seq(length(stock_list))){
 master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
 master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
 master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
+```
+
+```{r}
+#Adding Groupings
+master_df <- master_df %>% 
+  mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
 
 master_df
 ```
@@ -60,53 +74,6 @@ ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + 
 
 
 ```{r}
-
-
-
-  if (stock_list[idx] == "POAHY"){
-    POAHY_df <- temp_df
-  }
-  if (stock_list[idx] == "VWAPY"){
-    VWAPY_df <- temp_df
-  }
-  if (stock_list[idx] == "MBGYY"){
-    MBGYY_df <- temp_df
-  }
-  if (stock_list[idx] == "GM"){
-    GM_df <- temp_df
-  }
-  if (stock_list[idx] == "F"){
-    F_df <- temp_df
-  }
-  if (stock_list[idx] == "BMWYY"){
-    BMWYY_df <- temp_df
-  }
-  if (stock_list[idx] == "STLA"){
-    STLA_df <- temp_df
-  }
-  if (stock_list[idx] == "HMC"){
-    HMC_df <- temp_df
-  }
-  if (stock_list[idx] == "RACE"){
-    RACE_df <- temp_df
-  }
-  if (stock_list[idx] == "RIVN"){
-    RIVN_df <- temp_df
-  }
-  if (stock_list[idx] == "HYMTF"){
-    HYMTF_df <- temp_df
-  }
-  if (stock_list[idx] == "NIO"){
-    NIO_df <- temp_df
-  }
-  if (stock_list[idx] == "LCID"){
-    LCID_df <- temp_df
-  }
-  if (stock_list[idx] == "TTM"){
-    TTM_df <- temp_df
-  }
-
-
 
 ```
 
