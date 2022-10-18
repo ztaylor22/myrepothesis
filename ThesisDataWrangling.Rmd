@@ -83,6 +83,7 @@ ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + 
 
 
 ```{r}
+#NEW TIMETK VISUALIZATIONS
 #.interactive=FALSE makes it a static visualization based on ggplot library
 master_df %>%
  plot_time_series(Date, Close, .interactive=FALSE)
