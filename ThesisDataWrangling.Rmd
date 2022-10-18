@@ -43,6 +43,7 @@ ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", 
 master_df = NULL
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
+  #getSymbols was working previously?
   getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date,frequency=frequency)
   temp_df = as.data.frame(get(stock_index))
   temp_df$Date = row.names(temp_df)
@@ -82,7 +83,35 @@ ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + 
 
 
 ```{r}
+#.interactive=FALSE makes it a static visualization based on ggplot library
+master_df %>%
+ plot_time_series(Date, Close, .interactive=FALSE)
 
+
+#.interactive=TRUE makes it an interactive visualization based on Plotly library
+master_df %>%
+  plot_time_series(Date, Close, .interactive=TRUE, .plotly_slider=TRUE)
+
+master_df %>%
+  group_by(Index) %>%
+  plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .color_var=month(date), .interactive=FALSE)
+
+
+
+# Get data
+master_df %>%
+  # Group the data by Index
+  group_by(Index) %>%
+  # Visualize 
+  plot_anomaly_diagnostics(Date, Close)
+
+
+#gathering all anomaly data into a new df
+anomaly_data <- master_df %>%
+  group_by(Index) %>%
+  tk_anomaly_diagnostics(Date, Close) %>%
+  filter(anomaly == 'Yes')
+View(anomaly_data)
 ```
 
 
