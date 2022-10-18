@@ -6,14 +6,19 @@ date: '2022-10-10'
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-#install.packages("quantmod")
+install.packages("quantmod")
 install.packages("timetk")
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("lubridate")
 
 ```
 
 ```{r setup, include=FALSE}
 library(timetk)
+library(tidyverse)
 library(quantmod)
 library(ggplot2)
 library(dplyr)
