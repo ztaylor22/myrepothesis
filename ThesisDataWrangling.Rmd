@@ -6,13 +6,13 @@ date: '2022-10-10'
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages("quantmod")
-install.packages("timetk")
-install.packages("tidyverse")
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("tidyr")
-install.packages("lubridate")
+#install.packages("quantmod")
+#install.packages("timetk")
+#install.packages("tidyverse")
+#install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+#install.packages("lubridate")
 
 ```
 
@@ -43,7 +43,7 @@ ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", 
 master_df = NULL
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx]
-  getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date, frequency=frequency)
+  getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date,frequency=frequency)
   temp_df = as.data.frame(get(stock_index))
   temp_df$Date = row.names(temp_df)
   temp_df$Index = stock_index
