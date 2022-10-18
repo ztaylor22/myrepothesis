@@ -8,10 +8,13 @@ date: '2022-10-10'
 knitr::opts_chunk$set(echo = TRUE)
 
 #install.packages("quantmod")
-library(quantmod)
+install.packages("timetk")
+
 ```
 
 ```{r setup, include=FALSE}
+library(timetk)
+library(quantmod)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
