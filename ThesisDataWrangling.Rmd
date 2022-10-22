@@ -60,11 +60,56 @@ for (idx in seq(length(stock_list))){
 
   master_df = rbind(master_df, temp_df)
   
-  if (stock_list[idx] == "F"){
+  if (stock_list[idx]=="F"){
     F_df <- temp_df
   }
-  
+  if (stock_list[idx]=="GM"){
+    GM_df <- temp_df
+  }
+  if (stock_list[idx]=="TSLA"){
+    TSLA_df <- temp_df
+  }
+  if (stock_list[idx] == "POAHY"){
+     POAHY_df <- temp_df
+  }
+  if (stock_list[idx] == "VWAPY"){
+     VWAPY_df <- temp_df
+  }
+  if (stock_list[idx] == "MBGYY"){
+     MBGYY_df <- temp_df
+  }
+  if (stock_list[idx] == "BMWYY"){
+     BMWYY_df <- temp_df
+  }
+  if (stock_list[idx] == "STLA"){
+     STLA_df <- temp_df
+  }
+  if (stock_list[idx] == "HMC"){
+     HMC_df <- temp_df
+  }
+  if (stock_list[idx] == "RACE"){
+    RACE_df <- temp_df
+  }
+  if (stock_list[idx] == "RIVN"){
+    RIVN_df <- temp_df
+  }
+  if (stock_list[idx] == "HYMTF"){
+    HYMTF_df <- temp_df
+  }
+  if (stock_list[idx] == "NIO"){
+    NIO_df <- temp_df
+  }
+  if (stock_list[idx] == "LCID"){
+    LCID_df <- temp_df
+  }
+  if (stock_list[idx] == "TTM"){
+    TTM_df <- temp_df
+  }
+  if (stock_list[idx] == "NSANY"){
+    NSANY_df <- temp_df
+  }
 }
+#How would I do the above in a more efficient way? i.e., not have so many if statements and then have to rbind in the following code block?
 ```
 
 ```{r}
@@ -72,8 +117,22 @@ for (idx in seq(length(stock_list))){
 master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
 master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
 master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
+```
 
+```{r}
+#Creating an TwoModel_df
+TwoModels_df = rbind(F_df, GM_df, TSLA_df)
+TwoModels_df$Date <- ymd(TwoModels_df$Date)
+TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
+TwoModels_df = TwoModels_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
 
+#Creating a OneModel_df
+OneModel_df = rbind(VWAPY_df,NSANY_df)
+OneModel_df$Date <- ymd(OneModel_df$Date)
+OneModel_df$DateForGraphs <-format(OneModel_df$Date, format="%m-%d")
+OneModel_df = OneModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+
+#Creating an F_df. This has to occur after the above TwoModels_df code
 F_df$Date <- ymd(F_df$Date)
 F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
 F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
@@ -85,6 +144,7 @@ master_df <- master_df %>%
   mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
 
 master_df
+F_df
 ```
 
 ```{r}
@@ -107,7 +167,19 @@ F_df %>%
 ```
 
 ```{r}
-F_df %>%
+TwoModels_df %>%
+  group_by(Index) %>%
+  plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+```
+
+```{r}
+OneModel_df %>%
+  group_by(Index) %>%
+  plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+```
+
+```{r}
+ZeroModel_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
 ```
@@ -115,6 +187,7 @@ F_df %>%
 ```{r}
 #Anomaly Analysis
 
+#How would I run this with multiple companys????
 # Get data
 F_df %>%
   # Group the data by Index
