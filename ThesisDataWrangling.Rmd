@@ -170,6 +170,8 @@ F_df %>%
 TwoModels_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+
+#Should I create a df that averages 2Model, 1Model, 0Models? Or American versus nonAmerican?
 ```
 
 ```{r}
