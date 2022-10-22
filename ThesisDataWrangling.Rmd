@@ -4,8 +4,9 @@ output: html_document
 date: '2022-10-10'
 ---
 
+
+
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
 #install.packages("quantmod")
 #install.packages("timetk")
 #install.packages("tidyverse")
@@ -13,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 #install.packages("dplyr")
 #install.packages("tidyr")
 #install.packages("lubridate")
-
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r setup, include=FALSE}
@@ -29,7 +30,7 @@ library(lubridate)
 ```{r}
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY")
-from_date <- "2022-7-27"
+from_date <- "2022-6-27"
 to_date <- "2022-9-4"
 frequency <- "daily"
 
@@ -56,7 +57,13 @@ for (idx in seq(length(stock_list))){
   temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
     mutate(Difference=Open-Close) %>%
     mutate(PercentChange=Difference/Close)
+
   master_df = rbind(master_df, temp_df)
+  
+  if (stock_list[idx] == "F"){
+    F_df <- temp_df
+  }
+  
 }
 ```
 
@@ -65,6 +72,11 @@ for (idx in seq(length(stock_list))){
 master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
 master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
 master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
+
+
+F_df$Date <- ymd(F_df$Date)
+F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
+F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
 ```
 
 ```{r}
@@ -82,19 +94,20 @@ ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + 
 ```
 
 ```{r}
-master_df %>%
- plot_time_series(Date, Close, .interactive=FALSE)
+#I need to figure out how to make this graph accomodate multiple indexes
+F_df %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
 ```
 
 
 ```{r}
 #.interactive=TRUE makes it an interactive visualization based on Plotly library
-master_df %>%
+F_df %>%
   plot_time_series(Date, Close, .interactive=TRUE, .plotly_slider=TRUE)
 ```
 
 ```{r}
-master_df %>%
+F_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
 ```
@@ -103,14 +116,14 @@ master_df %>%
 #Anomaly Analysis
 
 # Get data
-master_df %>%
+F_df %>%
   # Group the data by Index
   group_by(Index) %>%
   # Visualize 
   plot_anomaly_diagnostics(Date, Close)
 
 #gathering all anomaly data into a new df
-anomaly_data <- master_df %>%
+anomaly_data <- F_df %>%
   group_by(Index) %>%
   tk_anomaly_diagnostics(Date, Close) %>%
   filter(anomaly == 'Yes')
