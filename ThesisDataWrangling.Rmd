@@ -185,6 +185,20 @@ ZeroModel_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
 ```
+```{r}
+#average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
+
+#Daily data --> simple regression 
+#dummy variable: 1 if after; 0 if before
+#dummy variable: 1 = 1 or 2 models, 0 = 0 models
+#interaction (if pos=effect)
+
+#different specification for each of the three important
+
+#Other:
+#Fix graph axis
+#Summary statistics?
+```
 
 ```{r}
 #Anomaly Analysis
