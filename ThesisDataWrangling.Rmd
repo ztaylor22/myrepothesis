@@ -136,6 +136,13 @@ OneModel_df = OneModel_df[c("Date","DateForGraphs","Index","Open","Close","Diffe
 F_df$Date <- ymd(F_df$Date)
 F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
 F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+
+#Creating a ZeroModel_df
+ZeroModel_df = rbind(POAHY_df,MBGYY_df,BMWYY_df,STLA_df,HMC_df,RACE_df,RIVN_df,HYMTF_df,NIO_df,LCID_df,TTM_df)
+ZeroModel_df$Date <- ymd(ZeroModel_df$Date)
+ZeroModel_df$DateForGraphs <-format(ZeroModel_df$Date, format="%m-%d")
+ZeroModel_df = ZeroModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+
 ```
 
 ```{r}
