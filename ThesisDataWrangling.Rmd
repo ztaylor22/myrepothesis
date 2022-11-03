@@ -114,53 +114,80 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 ```
 
 ```{r}
-#Creating an TwoModel_df
-TwoModels_df = rbind(F_df, GM_df, TSLA_df)
-TwoModels_df$Date <- ymd(TwoModels_df$Date)
-TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
-TwoModels_df = TwoModels_df[c("Date","Open","Close","Difference","PercentChange")] 
-
-#Creating a OneModel_df
-OneModel_df = rbind(VWAPY_df,NSANY_df)
-OneModel_df$Date <- ymd(OneModel_df$Date)
-OneModel_df$DateForGraphs <-format(OneModel_df$Date, format="%m-%d")
-OneModel_df = OneModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
-
-#Creating an F_df. This has to occur after the above TwoModels_df code
-F_df$Date <- ymd(F_df$Date)
-F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
-F_df = F_df[c("Date","Open","Close","Difference","PercentChange")]  #removed Index
-
-#Creating a ZeroModel_df
-ZeroModel_df = rbind(POAHY_df,MBGYY_df,BMWYY_df,STLA_df,HMC_df,RACE_df,RIVN_df,HYMTF_df,NIO_df,LCID_df,TTM_df)
-ZeroModel_df$Date <- ymd(ZeroModel_df$Date)
-ZeroModel_df$DateForGraphs <-format(ZeroModel_df$Date, format="%m-%d")
-ZeroModel_df = ZeroModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
-
-OneOrMoreModels_df = rbind(TwoModels_df,OneModel_df)
-```
-
-```{r}
-#Averaging along all indexes in a group(0 models or 1/2 models)
-ZeroModel_df_group_mean <- aggregate(ZeroModel_df, by = list(ZeroModel_df$Date), FUN = mean)
-OneOrMoreModels_df_group_mean <- aggregate(OneOrMoreModels_df, by = list(OneOrMoreModels_df$Date), FUN = mean)
-```
-```{r}
-ZeroModel_df_group_mean
-OneOrMoreModels_df_group_mean
-ZeroModel_df_group_mean %>%
-  plot_time_series(Date, Close, .interactive=FALSE)
-OneOrMoreModels_df_group_mean %>%
-  plot_time_series(Date, Close, .interactive=FALSE)
-```
-
-```{r}
 #Adding Groupings (not necessary at the moment but might be helpful for cleaning code later)
 master_df <- master_df %>% 
   mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
-
 master_df
 ```
+
+```{r}
+#Making qualified (1 or 2 models) df and disqualified (0 models) df
+Disqualified_df <- master_df %>%
+  filter(Group==0)
+Disqualified_df
+
+Qualified_df <- master_df %>%
+  filter(Group==1 | Group==2)
+Qualified_df
+```
+
+```{r}
+#Averaging along all indexes
+Mean_Disqualified_df = Disqualified_df[c("Date","Open","Close","Difference","PercentChange")] 
+Mean_Disqualified_df <- aggregate(Mean_Disqualified_df, by = list(Disqualified_df$Date), FUN = mean)
+Mean_Qualified_df = Qualified_df[c("Date","Open","Close","Difference","PercentChange")]
+Mean_Qualified_df <- aggregate(Mean_Qualified_df, by = list(Qualified_df$Date), FUN = mean)
+```
+
+```{r}
+Mean_Disqualified_df %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
+Mean_Qualified_df %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
+```
+  
+  
+```{r, eval=FALSE}
+#Old inefficient code approach
+if(FALSE){
+  #Creating an TwoModel_df
+  TwoModels_df = rbind(F_df, GM_df, TSLA_df)
+  TwoModels_df$Date <- ymd(TwoModels_df$Date)
+  TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
+  TwoModels_df = TwoModels_df[c("Date","Open","Close","Difference","PercentChange")] 
+  
+  #Creating a OneModel_df
+  OneModel_df = rbind(VWAPY_df,NSANY_df)
+  OneModel_df$Date <- ymd(OneModel_df$Date)
+  OneModel_df$DateForGraphs <-format(OneModel_df$Date, format="%m-%d")
+  OneModel_df = OneModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
+  
+  #Creating an F_df. This has to occur after the above TwoModels_df code
+  F_df$Date <- ymd(F_df$Date)
+  F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
+  F_df = F_df[c("Date","Open","Close","Difference","PercentChange")]  #removed Index
+  
+  #Creating a ZeroModel_df
+  ZeroModel_df = rbind(POAHY_df,MBGYY_df,BMWYY_df,STLA_df,HMC_df,RACE_df,RIVN_df,HYMTF_df,NIO_df,LCID_df,TTM_df)
+  ZeroModel_df$Date <- ymd(ZeroModel_df$Date)
+  ZeroModel_df$DateForGraphs <-format(ZeroModel_df$Date, format="%m-%d")
+  ZeroModel_df = ZeroModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
+  
+  OneOrMoreModels_df = rbind(TwoModels_df,OneModel_df)
+  
+  #Averaging along all indexes in a group(0 models or 1/2 models)
+  ZeroModel_df_group_mean <- aggregate(ZeroModel_df, by = list(ZeroModel_df$Date), FUN = mean)
+  OneOrMoreModels_df_group_mean <- aggregate(OneOrMoreModels_df, by = list(OneOrMoreModels_df$Date), FUN = mean)
+  
+  ZeroModel_df_group_mean
+  OneOrMoreModels_df_group_mean
+  ZeroModel_df_group_mean %>%
+    plot_time_series(Date, Close, .interactive=FALSE)
+  OneOrMoreModels_df_group_mean %>%
+    plot_time_series(Date, Close, .interactive=FALSE)
+}
+```
+
 
 ```{r}
 ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + labs(x="Date",y="Close")
