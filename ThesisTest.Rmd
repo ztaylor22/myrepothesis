@@ -1,0 +1,175 @@
+---
+title: "Thesis Test"
+output: html_document
+date: '2022-11-3'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE, eval=TRUE, message=F, include=T,comment=NULL, fig.height = 4, fig.width = 8)
+```
+
+```{r packageCheck, include=FALSE}
+mypacks <- c("timetk","dplyr","tidyverse","ggplot2","tidyr","lubridate","quantmod")  #packages
+packs <- installed.packages()   # find installed package list
+install.me <- mypacks[!(mypacks %in% packs[,"Package"])]  #what needs to be installed?
+if (length(install.me) >= 1) install.packages(install.me, repos = "http://cran.us.r-project.org")   # install (if needed)
+lapply(mypacks, library, character.only=TRUE)  # load all packages
+```
+
+
+
+
+```{r}
+#Fixed Inputs
+stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY")
+from_date <- "2022-6-27"
+to_date <- "2022-9-4"
+frequency <- "daily"
+TwoModels <- c("TSLA","GM","F")
+OneModel <- c("VWAPY","NSANY")
+ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
+```
+```{r}
+master_df = NULL
+for (idx in seq(length(stock_list))){
+  stock_index = stock_list[idx]
+  #getSymbols was working previously?
+  getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date,frequency=frequency)
+  temp_df = as.data.frame(get(stock_index))
+  temp_df$Date = row.names(temp_df)
+  temp_df$Index = stock_index
+  row.names(temp_df) = NULL
+  colnames(temp_df) = c("Open", "High", "Low", "Close", 
+                        "Volume", "Adjusted", "Date", "Index")
+  temp_df = temp_df[c("Date", "Index", "Open","Close")]
+  
+  temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
+    mutate(Difference=Open-Close) %>%
+    mutate(PercentChange=Difference/Close)
+  master_df = rbind(master_df, temp_df)
+  
+  if (stock_list[idx]=="F"){
+    F_df <- temp_df
+  }
+  if (stock_list[idx]=="GM"){
+    GM_df <- temp_df
+  }
+  if (stock_list[idx]=="TSLA"){
+    TSLA_df <- temp_df
+  }
+  if (stock_list[idx] == "POAHY"){
+     POAHY_df <- temp_df
+  }
+  if (stock_list[idx] == "VWAPY"){
+     VWAPY_df <- temp_df
+  }
+  if (stock_list[idx] == "MBGYY"){
+     MBGYY_df <- temp_df
+  }
+  if (stock_list[idx] == "BMWYY"){
+     BMWYY_df <- temp_df
+  }
+  if (stock_list[idx] == "STLA"){
+     STLA_df <- temp_df
+  }
+  if (stock_list[idx] == "HMC"){
+     HMC_df <- temp_df
+  }
+  if (stock_list[idx] == "RACE"){
+    RACE_df <- temp_df
+  }
+  if (stock_list[idx] == "RIVN"){
+    RIVN_df <- temp_df
+  }
+  if (stock_list[idx] == "HYMTF"){
+    HYMTF_df <- temp_df
+  }
+  if (stock_list[idx] == "NIO"){
+    NIO_df <- temp_df
+  }
+  if (stock_list[idx] == "LCID"){
+    LCID_df <- temp_df
+  }
+  if (stock_list[idx] == "TTM"){
+    TTM_df <- temp_df
+  }
+  if (stock_list[idx] == "NSANY"){
+    NSANY_df <- temp_df
+  }
+}
+#How would I do the above in a more efficient way? i.e., not have so many if statements and then have to rbind in the following code block?
+```
+```{r}
+#Cleaning up the dates column
+master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
+master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
+master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
+```
+```{r}
+#Creating an TwoModel_df
+TwoModels_df = rbind(F_df, GM_df, TSLA_df)
+TwoModels_df$Date <- ymd(TwoModels_df$Date)
+TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
+TwoModels_df = TwoModels_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+#Creating a OneModel_df
+OneModel_df = rbind(VWAPY_df,NSANY_df)
+OneModel_df$Date <- ymd(OneModel_df$Date)
+OneModel_df$DateForGraphs <-format(OneModel_df$Date, format="%m-%d")
+OneModel_df = OneModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+#Creating an F_df. This has to occur after the above TwoModels_df code
+F_df$Date <- ymd(F_df$Date)
+F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
+F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+```
+```{r}
+#Adding Groupings
+master_df <- master_df %>% 
+  mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
+master_df
+F_df
+```
+```{r}
+ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + labs(x="Date",y="Close")
+#Ideas: add a vertical line for the dates of interest
+#Color code companies based on their group: Group 1, Group 2, Group 3
+```
+```{r}
+#I need to figure out how to make this graph accomodate multiple indexes
+F_df %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
+```
+```{r}
+#.interactive=TRUE makes it an interactive visualization based on Plotly library
+F_df %>%
+  plot_time_series(Date, Close, .interactive=TRUE, .plotly_slider=TRUE)
+```
+```{r}
+TwoModels_df %>%
+  group_by(Index) %>%
+  plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+#Should I create a df that averages 2Model, 1Model, 0Models? Or American versus nonAmerican?
+```
+```{r}
+OneModel_df %>%
+  group_by(Index) %>%
+  plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+```
+```{r}
+ZeroModel_df %>%
+   group_by(Index) %>%
+   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
+ ```
+ ```{r}
+ #average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
+
+ #Daily data --> simple regression 
+ #dummy variable: 1 if after; 0 if before
+ #dummy variable: 1 = 1 or 2 models, 0 = 0 models
+ #interaction (if pos=effect)
+
+ #different specification for each of the three important
+
+ #Other:
+ #Fix graph axis
+ #Summary statistics?
+ ```
