@@ -13,7 +13,7 @@ install.packages("ggplot2")
 install.packages("dplyr")
 install.packages("tidyr")
 install.packages("lubridate")
-install.package("magrittr")
+install.packages("magrittr")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
