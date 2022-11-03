@@ -38,7 +38,6 @@ ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", 
 master_df = NULL
 for (idx in seq(length(stock_list))){
   stock_index = stock_list[idx] #try putting this directly into the function...
-  #getSymbols was working previously?
   getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date,frequency=frequency)
   temp_df = as.data.frame(get(stock_index))
   temp_df$Date = row.names(temp_df)
@@ -55,52 +54,52 @@ for (idx in seq(length(stock_list))){
 
   master_df = rbind(master_df, temp_df)
   
-  if (stock_list[idx]=="F"){
+  if (stock_index=="F"){
     F_df <- temp_df
   }
-  if (stock_list[idx]=="GM"){
+  if (stock_index=="GM"){
     GM_df <- temp_df
   }
-  if (stock_list[idx]=="TSLA"){
+  if (stock_index=="TSLA"){
     TSLA_df <- temp_df
   }
-  if (stock_list[idx] == "POAHY"){
+  if (stock_index=="POAHY"){
      POAHY_df <- temp_df
   }
-  if (stock_list[idx] == "VWAPY"){
+  if (stock_index=="VWAPY"){
      VWAPY_df <- temp_df
   }
-  if (stock_list[idx] == "MBGYY"){
+  if (stock_index=="MBGYY"){
      MBGYY_df <- temp_df
   }
-  if (stock_list[idx] == "BMWYY"){
+  if (stock_index=="BMWYY"){
      BMWYY_df <- temp_df
   }
-  if (stock_list[idx] == "STLA"){
+  if (stock_index=="STLA"){
      STLA_df <- temp_df
   }
-  if (stock_list[idx] == "HMC"){
+  if (stock_index=="HMC"){
      HMC_df <- temp_df
   }
-  if (stock_list[idx] == "RACE"){
+  if (stock_index=="RACE"){
     RACE_df <- temp_df
   }
-  if (stock_list[idx] == "RIVN"){
+  if (stock_index=="RIVN"){
     RIVN_df <- temp_df
   }
-  if (stock_list[idx] == "HYMTF"){
+  if (stock_index=="HYMTF"){
     HYMTF_df <- temp_df
   }
-  if (stock_list[idx] == "NIO"){
+  if (stock_index=="NIO"){
     NIO_df <- temp_df
   }
-  if (stock_list[idx] == "LCID"){
+  if (stock_index=="LCID"){
     LCID_df <- temp_df
   }
-  if (stock_list[idx] == "TTM"){
+  if (stock_index=="TTM"){
     TTM_df <- temp_df
   }
-  if (stock_list[idx] == "NSANY"){
+  if (stock_index=="NSANY"){
     NSANY_df <- temp_df
   }
 }
@@ -119,34 +118,44 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 TwoModels_df = rbind(F_df, GM_df, TSLA_df)
 TwoModels_df$Date <- ymd(TwoModels_df$Date)
 TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
-TwoModels_df = TwoModels_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+TwoModels_df = TwoModels_df[c("Date","Open","Close","Difference","PercentChange")] 
 
 #Creating a OneModel_df
 OneModel_df = rbind(VWAPY_df,NSANY_df)
 OneModel_df$Date <- ymd(OneModel_df$Date)
 OneModel_df$DateForGraphs <-format(OneModel_df$Date, format="%m-%d")
-OneModel_df = OneModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+OneModel_df = OneModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
 
 #Creating an F_df. This has to occur after the above TwoModels_df code
 F_df$Date <- ymd(F_df$Date)
 F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
-F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+F_df = F_df[c("Date","Open","Close","Difference","PercentChange")]  #removed Index
 
 #Creating a ZeroModel_df
 ZeroModel_df = rbind(POAHY_df,MBGYY_df,BMWYY_df,STLA_df,HMC_df,RACE_df,RIVN_df,HYMTF_df,NIO_df,LCID_df,TTM_df)
 ZeroModel_df$Date <- ymd(ZeroModel_df$Date)
 ZeroModel_df$DateForGraphs <-format(ZeroModel_df$Date, format="%m-%d")
-ZeroModel_df = ZeroModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+ZeroModel_df = ZeroModel_df[c("Date","Open","Close","Difference","PercentChange")] #removed Index
 
+OneOrMoreModels_df = rbind(TwoModels_df,OneModel_df)
 ```
 
 ```{r}
-#Adding Groupings
+#Averaging along all indexes in a group(0 models or 1/2 models)
+ZeroModel_df_group_mean <- aggregate(ZeroModel_df, by = list(ZeroModel_df$Date), FUN = mean)
+OneOrMoreModels_df_group_mean <- aggregate(OneOrMoreModels_df, by = list(OneOrMoreModels_df$Date), FUN = mean)
+```
+```{r}
+ZeroModel_df_group_mean
+OneOrMoreModels_df_group_mean
+```
+
+```{r}
+#Adding Groupings (not necessary at the moment but might be helpful for cleaning code later)
 master_df <- master_df %>% 
   mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
 
 master_df
-F_df
 ```
 
 ```{r}
