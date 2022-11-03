@@ -6,25 +6,30 @@ date: '2022-10-10'
 
 
 
-```{r setup, include=FALSE}
-#install.packages("quantmod")
-#install.packages("timetk")
-#install.packages("tidyverse")
-#install.packages("ggplot2")
-#install.packages("dplyr")
-#install.packages("tidyr")
-#install.packages("lubridate")
+```{r}
+install.packages("timetk")
+install.packages("tidyverse")
+install.packages("ggplot2")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("lubridate")
+install.package("magrittr")
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r setup, include=FALSE}
+```{r}
 library(timetk)
 library(tidyverse)
-library(quantmod)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
 library(lubridate)
+library(magrittr)
+```
+
+```{r}
+install.packages("quantmod")
+library(quantmod)
 ```
 
 ```{r}
@@ -43,7 +48,7 @@ ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", 
 ```{r}
 master_df = NULL
 for (idx in seq(length(stock_list))){
-  stock_index = stock_list[idx]
+  stock_index = stock_list[idx] #try putting this directly into the function...
   #getSymbols was working previously?
   getSymbols(stock_index, src = "yahoo",from=from_date,to=to_date,frequency=frequency)
   temp_df = as.data.frame(get(stock_index))
