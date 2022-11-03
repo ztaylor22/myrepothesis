@@ -4,32 +4,21 @@ output: html_document
 date: '2022-10-10'
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE, eval=TRUE, message=F, include=T,comment=NULL, fig.height = 4, fig.width = 8)
+```
 
-
-```{r}
-install.packages("timetk")
-install.packages("tidyverse")
-install.packages("ggplot2")
-install.packages("dplyr")
-install.packages("tidyr")
-install.packages("lubridate")
-install.packages("magrittr")
-knitr::opts_chunk$set(echo = TRUE)
+```{r packageCheck, include=FALSE}
+mypacks <- c("timetk","dplyr","tidyverse","ggplot2","tidyr","lubridate","magrittr","quantmod")  #packages
+packs <- installed.packages()   # find installed package list
+install.me <- mypacks[!(mypacks %in% packs[,"Package"])]  #what needs to be installed?
+if (length(install.me) >= 1) install.packages(install.me, repos = "http://cran.us.r-project.org")   # install (if needed)
+lapply(mypacks, library, character.only=TRUE)  # load all packages
 ```
 
 ```{r}
-library(timetk)
-library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(tidyr)
-library(lubridate)
-library(magrittr)
-```
-
-```{r}
-install.packages("quantmod")
-library(quantmod)
+#install.packages("quantmod")
+#library(quantmod)
 ```
 
 ```{r}
@@ -59,8 +48,9 @@ for (idx in seq(length(stock_list))){
                         "Volume", "Adjusted", "Date", "Index")
   temp_df = temp_df[c("Date", "Index", "Open","Close")]
   
-  temp_df <- temp_df %>% #Adding Difference & Percent Change to master_df 
-    mutate(Difference=Open-Close) %>%
+  #Adding Difference & Percent Change to master_df 
+  temp_df <- temp_df %>% 
+    mutate(Difference=Open-Close) %>% 
     mutate(PercentChange=Difference/Close)
 
   master_df = rbind(master_df, temp_df)
