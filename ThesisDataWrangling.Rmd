@@ -140,6 +140,13 @@ Mean_Qualified_df <- aggregate(Mean_Qualified_df, by = list(Qualified_df$Date), 
 ```
 
 ```{r}
+Mean_Disqualified_df
+Mean_Qualified_df
+#HOW DO I CHECK THAT THIS ACCURATELY CALCULATED THE MEAN?
+```
+
+
+```{r}
 Mean_Disqualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE)
 Mean_Qualified_df %>%
@@ -196,7 +203,7 @@ ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + 
 ```
 
 ```{r}
-#I need to figure out how to make this graph accomodate multiple indexes
+#I need to figure out how to make this graph accommodate multiple indexes
 F_df %>%
   plot_time_series(Date, Close, .interactive=FALSE)
 ```
