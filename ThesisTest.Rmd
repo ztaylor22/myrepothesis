@@ -17,8 +17,6 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 ```
 
 
-
-
 ```{r}
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY")
@@ -29,6 +27,7 @@ TwoModels <- c("TSLA","GM","F")
 OneModel <- c("VWAPY","NSANY")
 ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
 ```
+
 ```{r}
 master_df = NULL
 for (idx in seq(length(stock_list))){
@@ -99,18 +98,21 @@ for (idx in seq(length(stock_list))){
 }
 #How would I do the above in a more efficient way? i.e., not have so many if statements and then have to rbind in the following code block?
 ```
+
 ```{r}
 #Cleaning up the dates column
 master_df$Date <- ymd(master_df$Date) #To convert Date column from characters to dates 
 master_df$DateForGraphs <-format(master_df$Date, format="%m-%d") #Only for data visualization purposes
 master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] #reordering the columns
 ```
+
 ```{r}
 #Creating an TwoModel_df
 TwoModels_df = rbind(F_df, GM_df, TSLA_df)
 TwoModels_df$Date <- ymd(TwoModels_df$Date)
 TwoModels_df$DateForGraphs <-format(TwoModels_df$Date, format="%m-%d")
 TwoModels_df = TwoModels_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+
 #Creating a OneModel_df
 OneModel_df = rbind(VWAPY_df,NSANY_df)
 OneModel_df$Date <- ymd(OneModel_df$Date)
@@ -120,46 +122,32 @@ OneModel_df = OneModel_df[c("Date","DateForGraphs","Index","Open","Close","Diffe
 F_df$Date <- ymd(F_df$Date)
 F_df$DateForGraphs <-format(F_df$Date, format="%m-%d")
 F_df = F_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")] 
+
+#Creating a ZeroModel_df    
+ZeroModel_df = rbind(POAHY_df,MBGYY_df,BMWYY_df,STLA_df,HMC_df,RACE_df,RIVN_df,HYMTF_df,NIO_df,LCID_df,TTM_df)
+ZeroModel_df$Date <- ymd(ZeroModel_df$Date)
+ZeroModel_df$DateForGraphs <-format(ZeroModel_df$Date, format="%m-%d")
+ZeroModel_df = ZeroModel_df[c("Date","DateForGraphs","Index","Open","Close","Difference","PercentChange")]
+ZeroModel_df
 ```
-```{r}
-#Adding Groupings
-master_df <- master_df %>% 
-  mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
-master_df
-F_df
-```
-```{r}
-ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + labs(x="Date",y="Close")
-#Ideas: add a vertical line for the dates of interest
-#Color code companies based on their group: Group 1, Group 2, Group 3
-```
-```{r}
-#I need to figure out how to make this graph accomodate multiple indexes
-F_df %>%
-  plot_time_series(Date, Close, .interactive=FALSE)
-```
-```{r}
-#.interactive=TRUE makes it an interactive visualization based on Plotly library
-F_df %>%
-  plot_time_series(Date, Close, .interactive=TRUE, .plotly_slider=TRUE)
-```
+
+
 ```{r}
 TwoModels_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
-#Should I create a df that averages 2Model, 1Model, 0Models? Or American versus nonAmerican?
-```
-```{r}
+
 OneModel_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
-```
-```{r}
+
 ZeroModel_df %>%
    group_by(Index) %>%
    plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
- ```
- ```{r}
+```
+
+ 
+```{r}
  #average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
 
  #Daily data --> simple regression 
@@ -172,4 +160,22 @@ ZeroModel_df %>%
  #Other:
  #Fix graph axis
  #Summary statistics?
- ```
+```
+
+```{r}
+ggplot(master_df, aes(x=Date,y=PercentChange)) + geom_point(aes(color=Index)) + labs(x="Date",y="Close")
+#Ideas: add a vertical line for the dates of interest
+#Color code companies based on their group: Group 1, Group 2, Group 3
+```
+
+```{r}
+#I need to figure out how to make this graph accomodate multiple indexes
+F_df %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
+```
+
+```{r}
+#.interactive=TRUE makes it an interactive visualization based on Plotly library
+F_df %>%
+  plot_time_series(Date, Close, .interactive=TRUE, .plotly_slider=TRUE)
+```
