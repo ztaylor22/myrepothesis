@@ -148,6 +148,10 @@ OneOrMoreModels_df_group_mean <- aggregate(OneOrMoreModels_df, by = list(OneOrMo
 ```{r}
 ZeroModel_df_group_mean
 OneOrMoreModels_df_group_mean
+ZeroModel_df_group_mean %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
+OneOrMoreModels_df_group_mean %>%
+  plot_time_series(Date, Close, .interactive=FALSE)
 ```
 
 ```{r}
