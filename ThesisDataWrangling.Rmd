@@ -153,6 +153,29 @@ Mean_Qualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE)
 ```
   
+```{r}
+#we now have some graphs averaged by group and it looks like the effect is minimal
+#so now I need to run a regression to prove this and then I can talk about the reasons for this
+#1) it is possible that no company will qualify, especially when the China rule goes into effect. We really don't know yet. Company announcements about their supply chain will give us a better indication on whether they can qualify.
+#2) Some of these vehicles are too expensive
+#3)
+
+#average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
+
+#Daily data --> simple regression 
+#dummy variable: 1 if after; 0 if before
+#dummy variable: 1 = 1 or 2 models, 0 = 0 models
+#interaction (if pos=effect)
+
+#different specification for each of the three important
+
+#Other:
+#Fix graph axis
+#Summary statistics?
+```
+  
+  
+  
   
 ```{r, eval=FALSE}
 #Old inefficient code approach
@@ -234,6 +257,7 @@ ZeroModel_df %>%
   group_by(Index) %>%
   plot_time_series(Date, Close, .facet_scales="free", .smooth=FALSE, .interactive=FALSE)
 ```
+
 ```{r}
 #average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
 
