@@ -157,11 +157,13 @@ Disqualified_df %>%
                      .facet_ncol  = 3,     # 3-column layout
                      .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
 
-Qualified_df %>%
+sp <- Qualified_df %>%
     group_by(Index) %>%
     plot_time_series(Date, Close,
                      .facet_ncol  = 3,     # 3-column layout
-                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)")
+                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)") 
+
+sp + geom_vline(xintercept = 2022-07-27, linetype="dotted", color = "red", size=1.5)
 ```
 
 
