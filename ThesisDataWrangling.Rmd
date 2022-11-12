@@ -30,7 +30,11 @@ frequency <- "daily"
 
 TwoModels <- c("TSLA","GM","F")
 OneModel <- c("VWAPY","NSANY")
-ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM")
+ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "005380", "NIO", "LCID", "TATAMOTORS")
+#Something is odd with Porsche via Pitchbook
+#MBGYY --> MBGAF
+#Hyundai --> 005380
+#TTM --> TATAMOTORS
 ```
 
 
@@ -132,6 +136,25 @@ Qualified_df
 ```
 
 ```{r}
+Disqualified_df %>%
+    group_by(Index) %>%
+    plot_time_series(Date, Close,
+                     .facet_ncol  = 3,     # 3-column layout
+                     .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
+
+Qualified_df %>%
+    group_by(Index) %>%
+    plot_time_series(Date, Close,
+                     .facet_ncol  = 3,     # 3-column layout
+                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)")
+
+#Add a data cleaning section with some commentary
+#Researched the exposure of automotive companies to the U.S. market, in order to filter out any corporations that would like experience no business impact from U.S. incentive programs. Below is a table highlighting the exposure of each public automaker to the U.S. market in terms of _____. 
+#According to PitchBook data, 79.80% of Tata Motors' FY2020 Business Unit Revenue came from Jaguar and Land Rover, while only 18% came from Tata and other brands. While this is evolving, PitchBook data suggests only 67% of FY2022 Business Unit Revenue will come from Jaguar and Land Rover, it is still the overwhelming majority of Tata's revenue. Because of this, Tata Motors is included in the analysis.
+#My worry here is we have some automakers who barely seel vehicles in the usa and therefore their stock price is not tied to the US law at all. For example, Tata Motors (Index: TTM) primarily does not sell cars in the USA outside of their Land Rover and Jaguar brands. Because of their minimal exposure to the US market, it is unlikely any movement in their stock is tied to this event. A similar case can be made for Ferrari (Index: RACE), which sells very low volumes of luxury cars. Because of the luxury nature of their business, they are in an entirely different market than the rest of the automotive companies. I eliminated them from the data set because of the many dissimilarities that could have introduced an outlier to the data.
+```
+
+```{r}
 #Averaging along all indexes
 Mean_Disqualified_df = Disqualified_df[c("Date","Open","Close","Difference","PercentChange")] 
 Mean_Disqualified_df <- aggregate(Mean_Disqualified_df, by = list(Disqualified_df$Date), FUN = mean)
@@ -148,9 +171,9 @@ Mean_Qualified_df
 
 ```{r}
 Mean_Disqualified_df %>%
-  plot_time_series(Date, Close, .interactive=FALSE)
+  plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Disqualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
 Mean_Qualified_df %>%
-  plot_time_series(Date, Close, .interactive=FALSE)
+  plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Qualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
 ```
   
 ```{r}
