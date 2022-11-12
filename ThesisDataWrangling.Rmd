@@ -120,7 +120,6 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 ```{r}
 #Adding Groupings (not necessary at the moment but might be helpful for cleaning code later)
 master_df <- master_df %>% 
-  filter(Index != "RACE") %>% 
   mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
 master_df
 ```
@@ -156,6 +155,21 @@ Qualified_df %>%
 #What is going on with Honda???? Add some commentary on why Honda may have had the best reaction to the announcement from the disqualified group. While its cars may not qualify in the near term, Honda has made significant investments in U.S. based manufacturing. In particular, Honda and GM agreed to partner in the development of affordable compact EVs that will be manufactured in the U.S. Because of this, Honda may actually benefit from the tax credit via the partnership (Car and Driver).
 #My worry here is we have some automakers who barely seel vehicles in the usa and therefore their stock price is not tied to the US law at all. For example, Tata Motors (Index: TTM) primarily does not sell cars in the USA outside of their Land Rover and Jaguar brands. Because of their minimal exposure to the US market, it is unlikely any movement in their stock is tied to this event. A similar case can be made for Ferrari (Index: RACE), which sells very low volumes of luxury cars. Because of the luxury nature of their business, they are in an entirely different market than the rest of the automotive companies. I eliminated them from the data set because of the many dissimilarities that could have introduced an outlier to the data.
 ```
+```{r}
+Disqualified_df %>%
+    group_by(Index) %>%
+    filter(Index != "RACE") %>% 
+    plot_time_series(Date, Close,
+                     .facet_ncol  = 3,     # 3-column layout
+                     .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
+
+Qualified_df %>%
+    group_by(Index) %>%
+    plot_time_series(Date, Close,
+                     .facet_ncol  = 3,     # 3-column layout
+                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)")
+```
+
 
 ```{r}
 #Averaging along all indexes
