@@ -120,6 +120,7 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 ```{r}
 #Adding Groupings (not necessary at the moment but might be helpful for cleaning code later)
 master_df <- master_df %>% 
+  filter(Index != "RACE") %>% 
   mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
 master_df
 ```
@@ -151,6 +152,8 @@ Qualified_df %>%
 #Add a data cleaning section with some commentary
 #Researched the exposure of automotive companies to the U.S. market, in order to filter out any corporations that would like experience no business impact from U.S. incentive programs. Below is a table highlighting the exposure of each public automaker to the U.S. market in terms of _____. 
 #According to PitchBook data, 79.80% of Tata Motors' FY2020 Business Unit Revenue came from Jaguar and Land Rover, while only 18% came from Tata and other brands. While this is evolving, PitchBook data suggests only 67% of FY2022 Business Unit Revenue will come from Jaguar and Land Rover, it is still the overwhelming majority of Tata's revenue. Because of this, Tata Motors is included in the analysis.
+#Ferrari (Index: RACE) is another brand I considered eliminating from the data. They only sell luxury cars and a large portion of their revenue is not actually from their vehicles put their merchandise. Roughly one-third of the automakers revenue comes from pricey merchandise like Ferrari clothing and (Beloved Brands). Because of the ultra-luxury nature of the brand, it does not make sense to compare Ferrari to manufacturers that build vehicles for entirely different segments of customers.
+#What is going on with Honda????
 #My worry here is we have some automakers who barely seel vehicles in the usa and therefore their stock price is not tied to the US law at all. For example, Tata Motors (Index: TTM) primarily does not sell cars in the USA outside of their Land Rover and Jaguar brands. Because of their minimal exposure to the US market, it is unlikely any movement in their stock is tied to this event. A similar case can be made for Ferrari (Index: RACE), which sells very low volumes of luxury cars. Because of the luxury nature of their business, they are in an entirely different market than the rest of the automotive companies. I eliminated them from the data set because of the many dissimilarities that could have introduced an outlier to the data.
 ```
 
