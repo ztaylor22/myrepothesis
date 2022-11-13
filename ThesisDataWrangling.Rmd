@@ -198,11 +198,10 @@ Mean_Qualified_df %>%
 #Fix graph axis
 #Summary statistics?
 
-lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression
+lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression with Group as dummy variable
 summary(lmHeight) #Review the results
-#What other features?
-#How do I hone in on that one day?
-#How do I make this difference in difference?
+#What other features should I include?
+#How do I make this a difference-in-difference approach and hone in on the treatment (annoucement on July 27th)?
 ```
   
   
