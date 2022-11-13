@@ -171,13 +171,13 @@ Mean_Qualified_df
 
 
 ```{r}
-Mean_Disqualified_df %>%
+sp1 <- Mean_Disqualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Disqualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
-Mean_Qualified_df %>%
+sp <- Mean_Qualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Qualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
 
 #add dots? Standard deviation?
-#Get an R Squared...how well dots fit the dataset
+#Get an R Squared...how well dots fit the data set
 ```
   
 ```{r}
@@ -190,12 +190,22 @@ Mean_Qualified_df %>%
 lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression with Group as dummy variable
 summary(lmHeight) #Review the results
 #What other features should I include?
-#How do I make this a difference-in-difference approach and hone in on the treatment (annoucement on July 27th)?
+#How do I make this a difference-in-difference approach and focus on  treatment (announcement July 27th)?
 #What summary statistics should I include?
 ```
   
-  
-  
+```{r}
+#Not sure what this is or how it might be helpful...
+master_df %>%
+    group_by(Group) %>%
+    plot_time_series_regression(
+        .date_var     = Date,
+        .formula      = Difference ~ as.numeric(Date),
+        .facet_ncol   = 2,
+        .interactive  = FALSE,
+        .show_summary = FALSE
+    )
+```
   
 ```{r, eval=FALSE}
 #Old inefficient code approach
