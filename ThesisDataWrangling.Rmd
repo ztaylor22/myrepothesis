@@ -1,6 +1,8 @@
 ---
 title: "ThesisDataWrangling"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 date: '2022-10-10'
 ---
 
@@ -185,23 +187,11 @@ Mean_Qualified_df %>%
 #2) Some of these vehicles are too expensive
 #3)
 
-#average return on each day 1or2 versus 0, plot the key date lines, and see if there looks like an impact
-
-#Daily data --> simple regression 
-#dummy variable: 1 if after; 0 if before
-#dummy variable: 1 = 1 or 2 models, 0 = 0 models
-#interaction (if pos=effect)
-
-#different specification for each of the three important
-
-#Other:
-#Fix graph axis
-#Summary statistics?
-
 lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression with Group as dummy variable
 summary(lmHeight) #Review the results
 #What other features should I include?
 #How do I make this a difference-in-difference approach and hone in on the treatment (annoucement on July 27th)?
+#What summary statistics should I include?
 ```
   
   
