@@ -143,13 +143,13 @@ Disqualified_df %>%
     group_by(Index) %>%
     plot_time_series(Date, Close,
                      .facet_ncol  = 3,     # 3-column layout
-                     .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
+                     .interactive = FALSE, .title="Closing Price for Disqualified Automakers (faceted by index)")
 
 sp <- Qualified_df %>%
     group_by(Index) %>%
     plot_time_series(Date, Close,
                      .facet_ncol  = 3,     # 3-column layout
-                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)") 
+                     .interactive = FALSE, .title="Closing Price for Qualified Automakers (faceted by index)") 
 
 sp + geom_vline(xintercept = 2022-07-27, linetype="dotted", color = "red", size=1.5)
 ```
@@ -171,9 +171,9 @@ Mean_Qualified_df
 
 
 ```{r}
-sp1 <- Mean_Disqualified_df %>%
+Mean_Disqualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Disqualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
-sp <- Mean_Qualified_df %>%
+Mean_Qualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Qualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
 
 #add dots? Standard deviation?
