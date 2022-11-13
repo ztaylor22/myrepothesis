@@ -23,18 +23,16 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 
 ```{r}
 #Fixed Inputs
-stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGYY", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY")
+stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGAF", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY", "VLVLY")
 from_date <- "2022-6-27"
 to_date <- "2022-9-4"
 frequency <- "daily"
 
-TwoModels <- c("TSLA","GM","F")
+TwoModels <- c("TSLA","GM","F", "HMC")
 OneModel <- c("VWAPY","NSANY")
-ZeroModels <- c("TM", "POAHY", "MBGYY", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "005380", "NIO", "LCID", "TATAMOTORS")
+ZeroModels <- c("TM", "POAHY", "MBGAF", "BMWYY", "STLA", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "VLVLY")
 #Something is odd with Porsche via Pitchbook
-#MBGYY --> MBGAF
-#Hyundai --> 005380
-#TTM --> TATAMOTORS
+#Added Volvo VLVLY
 ```
 
 
@@ -127,32 +125,21 @@ master_df
 ```{r}
 #Making qualified (1 or 2 models) df and disqualified (0 models) df
 Disqualified_df <- master_df %>%
-  filter(Group==0)
+  filter(Group==0) %>%
+  filter(Index != "RACE") #Filter out RACE
+
+
 Disqualified_df
 
 Qualified_df <- master_df %>%
   filter(Group==1 | Group==2)
+  #filter(Index != "HMC")
 Qualified_df
 ```
 
 ```{r}
-#Before RACE is eliminated
 Disqualified_df %>%
     group_by(Index) %>%
-    plot_time_series(Date, Close,
-                     .facet_ncol  = 3,     # 3-column layout
-                     .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
-
-Qualified_df %>%
-    group_by(Index) %>%
-    plot_time_series(Date, Close,
-                     .facet_ncol  = 3,     # 3-column layout
-                     .interactive = FALSE, .title="Mean Closing Price for Qualified Automakers (faceted by index)")
-```
-```{r}
-Disqualified_df %>%
-    group_by(Index) %>%
-    filter(Index != "RACE") %>% #Filter out RACE
     plot_time_series(Date, Close,
                      .facet_ncol  = 3,     # 3-column layout
                      .interactive = FALSE, .title="Mean Closing Price for Disqualified Automakers (faceted by index)")
