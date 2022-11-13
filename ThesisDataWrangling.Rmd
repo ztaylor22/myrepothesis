@@ -118,22 +118,21 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 ```{r}
 #Adding Groupings (not necessary at the moment but might be helpful for cleaning code later)
 master_df <- master_df %>% 
-  mutate(Group = case_when(Index %in% TwoModels ~ 2, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0))
+  mutate(Group = case_when(Index %in% TwoModels ~ 1, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0)) %>%
+    filter(Index != "RACE") #Filter out RACE
 master_df
 ```
 
 ```{r}
 #Making qualified (1 or 2 models) df and disqualified (0 models) df
 Disqualified_df <- master_df %>%
-  filter(Group==0) %>%
-  filter(Index != "RACE") #Filter out RACE
-
+  filter(Group==0)
 
 Disqualified_df
 
 Qualified_df <- master_df %>%
-  filter(Group==1 | Group==2)
-  #filter(Index != "HMC")
+  filter(Group==1)
+
 Qualified_df
 ```
 
@@ -174,6 +173,9 @@ Mean_Disqualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Disqualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
 Mean_Qualified_df %>%
   plot_time_series(Date, Close, .interactive=FALSE, .title="Mean Closing Price for Qualified Automakers", .x_lab="Date", .y_lab="Average Closing Price")
+
+#add dots? Standard deviation?
+#Get an R Squared...how well dots fit the dataset
 ```
   
 ```{r}
@@ -195,6 +197,12 @@ Mean_Qualified_df %>%
 #Other:
 #Fix graph axis
 #Summary statistics?
+
+lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression
+summary(lmHeight) #Review the results
+#What other features?
+#How do I hone in on that one day?
+#How do I make this difference in difference?
 ```
   
   
