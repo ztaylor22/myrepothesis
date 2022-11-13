@@ -187,10 +187,11 @@ Mean_Qualified_df %>%
 #2) Some of these vehicles are too expensive
 #3)
 
-lmHeight = lm(Difference~Group, data = master_df) #Create the linear regression with Group as dummy variable
+#Create the linear regression with Group(0 or 1) as dummy variable
+lmHeight = lm(Difference~Group, data = master_df) 
 summary(lmHeight) #Review the results
 #What other features should I include?
-#How do I make this a difference-in-difference approach and focus on  treatment (announcement July 27th)?
+#How do I make this a difference-in-difference approach and focus on the treatment date (announcement July 27th)?
 #What summary statistics should I include?
 ```
   
