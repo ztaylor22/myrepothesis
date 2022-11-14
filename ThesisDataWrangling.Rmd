@@ -33,6 +33,8 @@ to_date <- "2022-8-3"
 #Instead of just before and after: dummies for each day. Group, Each Day, Interaction between Group and Each Day
 #Calculating the difference between each graph on a daily basis 
 #Rerun with three data points
+#Start with daily one
+#Ideally the stock returns are flat before and then it jumps up in group 1
 frequency <- "daily"
 
 TwoModels <- c("TSLA","GM","F", "HMC")
