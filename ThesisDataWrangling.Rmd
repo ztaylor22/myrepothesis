@@ -122,6 +122,14 @@ master_df = master_df[c("Date","DateForGraphs","Index","Open","Close","Differenc
 master_df <- master_df %>% 
   mutate(Group = case_when(Index %in% TwoModels ~ 1, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0)) %>%
     filter(Index != "RACE") #Filter out RACE
+
+#Creating a column for if the date was before (0) July 27th or after (1)
+master_df$Event1 = ifelse(master_df$Date >= as.Date('2022-07-27'), 1, 0)
+#same but for event 2: Sinema
+master_df$Event2 = ifelse(master_df$Date >= as.Date('2022-08-04'), 1, 0)
+#same but for event 3: law signed
+master_df$Event3 = ifelse(master_df$Date >= as.Date('2022-08-16'), 1, 0)
+
 master_df
 ```
 
