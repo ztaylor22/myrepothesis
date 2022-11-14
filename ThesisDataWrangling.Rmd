@@ -26,8 +26,13 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 ```{r}
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGAF", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY", "VLVLY")
-from_date <- "2022-6-27"
-to_date <- "2022-9-4"
+from_date <- "2022-7-20"
+to_date <- "2022-8-3"
+#Adjust this to a week: how to figure out the internal
+#Calculate the returns. Average and plot them on the same figure --> smoother in ggplot 
+#Instead of just before and after: dummies for each day. Group, Each Day, Interaction between Group and Each Day
+#Calculating the difference between each graph on a daily basis 
+#Rerun with three data points
 frequency <- "daily"
 
 TwoModels <- c("TSLA","GM","F", "HMC")
