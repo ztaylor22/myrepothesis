@@ -123,15 +123,33 @@ master_df <- master_df %>%
   mutate(Group = case_when(Index %in% TwoModels ~ 1, Index %in% OneModel ~ 1, Index %in% ZeroModels ~ 0)) %>%
     filter(Index != "RACE") #Filter out RACE
 
-#Creating a column for if the date was before (0) July 27th or after (1)
-master_df$Event1 = ifelse(master_df$Date >= as.Date('2022-07-27'), 1, 0)
+#Creating a column for if the date was before (0) July 27th or after (1): annoucement
+master_df$AfterEvent1 = ifelse(master_df$Date >= as.Date('2022-07-27'), 1, 0)
 #same but for event 2: Sinema
-master_df$Event2 = ifelse(master_df$Date >= as.Date('2022-08-04'), 1, 0)
+master_df$AfterEvent2 = ifelse(master_df$Date >= as.Date('2022-08-04'), 1, 0)
 #same but for event 3: law signed
-master_df$Event3 = ifelse(master_df$Date >= as.Date('2022-08-16'), 1, 0)
+master_df$AfterEvent3 = ifelse(master_df$Date >= as.Date('2022-08-16'), 1, 0)
+
+#Creating an interaction term between AfterEvent1 and Group
+master_df$Interaction1 = master_df$AfterEvent1 * master_df$Group
+
+#Lag Close Price
+master_df <- master_df %>% 
+  mutate(LagClose = lag(Close))
+
+#Difference between current day and prior day closing price
+master_df <- master_df %>% 
+  mutate(Returns = (Close - LagClose)/LagClose)
 
 master_df
 ```
+```{r}
+#Diff-in-Diff Regressor
+didreg1 = lm(Returns ~ AfterEvent1 + Group + Interaction1, data = master_df) 
+summary(didreg1) #Review the results
+#What other features should I include?
+```
+
 
 ```{r}
 #Making qualified (1 or 2 models) df and disqualified (0 models) df
