@@ -225,7 +225,18 @@ master_df$P32 = ifelse(master_df$Date == as.Date('2022-08-28'), 1, 0)
 master_df$P33 = ifelse(master_df$Date == as.Date('2022-08-29'), 1, 0)
 master_df$P34 = ifelse(master_df$Date == as.Date('2022-08-30'), 1, 0)
 master_df$P35 = ifelse(master_df$Date == as.Date('2022-08-31'), 1, 0)
-
+master_df$P36 = ifelse(master_df$Date == as.Date('2022-09-01'), 1, 0)
+master_df$P37 = ifelse(master_df$Date == as.Date('2022-09-02'), 1, 0)
+master_df$P38 = ifelse(master_df$Date == as.Date('2022-09-03'), 1, 0)
+master_df$P39 = ifelse(master_df$Date == as.Date('2022-09-04'), 1, 0)
+master_df$P40 = ifelse(master_df$Date == as.Date('2022-09-05'), 1, 0)
+master_df$P41 = ifelse(master_df$Date == as.Date('2022-09-06'), 1, 0)
+master_df$P42 = ifelse(master_df$Date == as.Date('2022-09-07'), 1, 0)
+master_df$P43 = ifelse(master_df$Date == as.Date('2022-09-08'), 1, 0)
+master_df$P44 = ifelse(master_df$Date == as.Date('2022-09-09'), 1, 0)
+master_df$P45 = ifelse(master_df$Date == as.Date('2022-09-10'), 1, 0)
+master_df$P46 = ifelse(master_df$Date == as.Date('2022-09-11'), 1, 0)
+master_df$P47 = ifelse(master_df$Date == as.Date('2022-09-12'), 1, 0)
 ```
 
 
