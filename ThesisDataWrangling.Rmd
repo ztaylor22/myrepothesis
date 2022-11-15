@@ -319,7 +319,7 @@ Mean_Qualified_df %>%
 #3)
 
 #Create the linear regression with Group(0 or 1) as dummy variable
-lmHeight = lm(Difference~Group, data = master_df) 
+lmHeight = lm(Returns~Group, data = master_df) 
 summary(lmHeight) #Review the results
 #What other features should I include?
 #How do I make this a difference-in-difference approach and focus on the treatment date (announcement July 27th)?
