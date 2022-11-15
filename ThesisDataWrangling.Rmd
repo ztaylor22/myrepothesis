@@ -27,7 +27,7 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGAF", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY", "VLVLY")
 from_date <- "2022-6-26"
-to_date <- "2022-8-15"
+to_date <- "2022-9-15"
 #Adjust this to a week: how to figure out the internal
 #Calculate the returns. Average and plot them on the same figure --> smoother in ggplot 
 #Instead of just before and after: dummies for each day. Group, Each Day, Interaction between Group and Each Day
@@ -334,7 +334,23 @@ master_df <- master_df %>%
   mutate_at('Group', as.character)
 master_df
 
-ggplot(master_df, aes(x=Date, y=Returns, group=Group, color=Group)) + geom_line() + ylim(-0.25,0.25) + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups") +scale_color_discrete(labels=c('Unqualified','Qualified')) 
+
+master_df1 <- master_df %>%
+  group_by(Date, Group) %>%
+  summarize(MeanReturns=mean(Returns))
+
+master_df1
+
+# Assign range of the dates to
+# date_range object
+date_range1 <- which(master_df1$Date %in% as.Date(c("2022-07-27")))
+date_range <- which(master_df1$Date %in% as.Date(c("2022-08-04", "2022-08-16")) )
+
+
+p <- ggplot(master_df1, aes(x=Date, y=MeanReturns, group=Group, color=Group)) + geom_line() + ylim(-0.07,0.07) + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups") +scale_color_discrete(labels=c('Unqualified','Qualified')) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range1]), color = "blue", size = 1) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range]), color = "black", size = 1) 
+
+p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=7, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=7, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=7, fontface="bold", angle=15)
+
 
 #If I can scale these manually that would be preferred
 #Figure out what is wrong with that first data point
