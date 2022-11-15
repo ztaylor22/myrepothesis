@@ -11,7 +11,7 @@ knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE, eval=TRUE, message=F, include=
 ```
 
 ```{r packageCheck, include=FALSE}
-mypacks <- c("timetk","dplyr","tidyverse","ggplot2","tidyr","lubridate","quantmod")  #packages
+mypacks <- c("timetk","dplyr","tidyverse","ggplot2","tidyr","lubridate","quantmod","viridis")  #packages
 packs <- installed.packages()   # find installed package list
 install.me <- mypacks[!(mypacks %in% packs[,"Package"])]  #what needs to be installed?
 if (length(install.me) >= 1) install.packages(install.me, repos = "http://cran.us.r-project.org")   # install (if needed)
@@ -245,8 +245,97 @@ master_df$P46 = ifelse(master_df$Date == as.Date('2022-09-11'), 1, 0)
 master_df$P47 = ifelse(master_df$Date == as.Date('2022-09-12'), 1, 0)
 
 #NEXT I NEED TO MAKE INTERACTION TERMS
+master_df$GroupxN30 = master_df$N30 * master_df$Group
+master_df$GroupxN29 = master_df$N29 * master_df$Group
+master_df$GroupxN28 = master_df$N28 * master_df$Group
+master_df$GroupxN27 = master_df$N27 * master_df$Group
+master_df$GroupxN26 = master_df$N26 * master_df$Group
+master_df$GroupxN25 = master_df$N25 * master_df$Group
+master_df$GroupxN24 = master_df$N24 * master_df$Group
+master_df$GroupxN23 = master_df$N23 * master_df$Group
+master_df$GroupxN22 = master_df$N22 * master_df$Group
+master_df$GroupxN21 = master_df$N21 * master_df$Group
+master_df$GroupxN20 = master_df$N20 * master_df$Group
+master_df$GroupxN19 = master_df$N19 * master_df$Group
+master_df$GroupxN18 = master_df$N18 * master_df$Group
+master_df$GroupxN17 = master_df$N17 * master_df$Group
+master_df$GroupxN16 = master_df$N16 * master_df$Group
+master_df$GroupxN15 = master_df$N15 * master_df$Group
+master_df$GroupxN14 = master_df$N14 * master_df$Group
+master_df$GroupxN13 = master_df$N13 * master_df$Group
+master_df$GroupxN12 = master_df$N12 * master_df$Group
+master_df$GroupxN11 = master_df$N11 * master_df$Group
+master_df$GroupxN10 = master_df$N10 * master_df$Group
+master_df$GroupxN09 = master_df$N09 * master_df$Group
+master_df$GroupxN08 = master_df$N08 * master_df$Group
+master_df$GroupxN07 = master_df$N07 * master_df$Group
+master_df$GroupxN06 = master_df$N06 * master_df$Group
+master_df$GroupxN05 = master_df$N05 * master_df$Group
+master_df$GroupxN04 = master_df$N04 * master_df$Group
+master_df$GroupxN03 = master_df$N03 * master_df$Group
+master_df$GroupxN02 = master_df$N02 * master_df$Group
+master_df$GroupxN01 = master_df$N01 * master_df$Group
+master_df$GroupxEvent0 = master_df$Event0 * master_df$Group
+master_df$GroupxP01 = master_df$P01 * master_df$Group
+master_df$GroupxP02 = master_df$P02 * master_df$Group
+master_df$GroupxP03 = master_df$P03 * master_df$Group
+master_df$GroupxP04 = master_df$P04 * master_df$Group
+master_df$GroupxP05 = master_df$P05 * master_df$Group
+master_df$GroupxP06 = master_df$P06 * master_df$Group
+master_df$GroupxP07 = master_df$P07 * master_df$Group
+master_df$GroupxEvent1 = master_df$Event1 * master_df$Group
+master_df$GroupxP09 = master_df$P09 * master_df$Group
+master_df$GroupxP10 = master_df$P10 * master_df$Group
+master_df$GroupxP11 = master_df$P11 * master_df$Group
+master_df$GroupxP12 = master_df$P12 * master_df$Group
+master_df$GroupxP13 = master_df$P13 * master_df$Group
+master_df$GroupxP14 = master_df$P14 * master_df$Group
+master_df$GroupxP15 = master_df$P15 * master_df$Group
+master_df$GroupxEvent2 = master_df$Event2 * master_df$Group
+master_df$GroupxP17 = master_df$P17 * master_df$Group
+master_df$GroupxP18 = master_df$P18 * master_df$Group
+master_df$GroupxP19 = master_df$P19 * master_df$Group
+master_df$GroupxP20 = master_df$P20 * master_df$Group
+master_df$GroupxP21 = master_df$P21 * master_df$Group
+master_df$GroupxP22 = master_df$P22 * master_df$Group
+master_df$GroupxP23 = master_df$P23 * master_df$Group
+master_df$GroupxP24 = master_df$P24 * master_df$Group
+master_df$GroupxP25 = master_df$P25 * master_df$Group
+master_df$GroupxP26 = master_df$P26 * master_df$Group
+master_df$GroupxP27 = master_df$P27 * master_df$Group
+master_df$GroupxP28 = master_df$P28 * master_df$Group
+master_df$GroupxP29 = master_df$P29 * master_df$Group
+master_df$GroupxP30 = master_df$P30 * master_df$Group
+master_df$GroupxP31 = master_df$P31 * master_df$Group
+master_df$GroupxP32 = master_df$P32 * master_df$Group
+master_df$GroupxP33 = master_df$P33 * master_df$Group
+master_df$GroupxP34 = master_df$P34 * master_df$Group
+master_df$GroupxP35 = master_df$P35 * master_df$Group
+master_df$GroupxP36 = master_df$P36 * master_df$Group
+master_df$GroupxP37 = master_df$P37 * master_df$Group
+master_df$GroupxP38 = master_df$P38 * master_df$Group
+master_df$GroupxP39 = master_df$P39 * master_df$Group
+master_df$GroupxP40 = master_df$P40 * master_df$Group
+master_df$GroupxP41 = master_df$P41 * master_df$Group
+master_df$GroupxP42 = master_df$P42 * master_df$Group
+master_df$GroupxP43 = master_df$P43 * master_df$Group
+master_df$GroupxP44 = master_df$P44 * master_df$Group
+master_df$GroupxP45 = master_df$P45 * master_df$Group
+master_df$GroupxP46 = master_df$P46 * master_df$Group
+master_df$GroupxP47 = master_df$P47 * master_df$Group
 ```
 
+```{r}
+#new ggplot graphs
+master_df1 <- master_df %>% 
+  filter(Date > '2022-06-27') 
+
+master_df1$Group = ifelse(master_df$Group == 1, "1", "0")
+
+ggplot(master_df1, aes(x=Date, y=Returns)) + geom_point(aes(color=Group)) + geom_smooth() scale_color_viridis(discrete=TRUE) + theme(legend.position = "top")
+
+#, color=Group, group=Group
+```
 
 ```{r}
 #Diff-in-Diff Regression
