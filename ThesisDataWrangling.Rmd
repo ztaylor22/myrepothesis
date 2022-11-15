@@ -303,7 +303,7 @@ p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", colo
 ```
 
 ```{r}
-#Now I am making the grouped and company specific graphs
+#Now I am making the grouped and company specific graphs using a different approach via timetk package. I'm considering simplifying this with dplyr and ggplot
 
 #Making qualified df (1 or 2 models) and disqualified df (0 models) 
 Disqualified_df <- master_df %>%
