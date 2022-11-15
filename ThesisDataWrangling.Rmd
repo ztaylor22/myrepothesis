@@ -26,7 +26,7 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 ```{r}
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGAF", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY", "VLVLY")
-from_date <- "2022-6-27"
+from_date <- "2022-6-26"
 to_date <- "2022-8-15"
 #Adjust this to a week: how to figure out the internal
 #Calculate the returns. Average and plot them on the same figure --> smoother in ggplot 
@@ -328,15 +328,16 @@ master_df
 ```
 
 ```{r}
-#new ggplot graphs
-master_df1 <- master_df %>% 
-  filter(Date > '2022-06-27') 
+#The reason why the first data point in my graph was always super high (no matter where we started) is because the first Returns for Toyota pulls Tesla's last LagClose. To prevent this, we need to filter the first date in the data set.
+master_df <- master_df %>% 
+  filter(Date > '2022-6-27') %>%
+  mutate_at('Group', as.character)
+master_df
 
-#master_df1$Group = ifelse(master_df$Group == 1, "1", "0")
+ggplot(master_df, aes(x=Date, y=Returns, group=Group, color=Group)) + geom_line() + ylim(-0.25,0.25) + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups") +scale_color_discrete(labels=c('Unqualified','Qualified')) 
 
-ggplot(master_df1, aes(x=Date, y=Returns, group=Group, color=Group)) + geom_line() + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups")
-
-#, color=Group, group=Group
+#If I can scale these manually that would be preferred
+#Figure out what is wrong with that first data point
 ```
 
 ```{r}
@@ -350,13 +351,11 @@ summary(didreg1) #Review the results
 ```{r}
 #Making qualified (1 or 2 models) df and disqualified (0 models) df
 Disqualified_df <- master_df %>%
-  filter(Date > '2022-06-27') %>%
   filter(Group==0)
 
 Disqualified_df
 
 Qualified_df <- master_df %>%
-  filter(Date > '2022-06-27') %>%
   filter(Group==1)
 
 Qualified_df
