@@ -40,9 +40,9 @@ from_date <- "2022-6-26"
 to_date <- "2022-9-15"
 frequency <- "daily"
 
-TwoModels <- c("TSLA","GM","F", "HMC")
+TwoModels <- c("TSLA","GM","F") #Moved HMC to ZeroModels. Can reconsider this in my thesis potentially
 OneModel <- c("VWAPY","NSANY")
-ZeroModels <- c("TM", "POAHY", "MBGAF", "BMWYY", "STLA", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "VLVLY")
+ZeroModels <- c("TM", "POAHY", "MBGAF", "BMWYY", "STLA", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "VLVLY", "HMC")
 #Added Volvo VLVLY
 ```
 
