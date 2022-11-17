@@ -3,6 +3,7 @@ title: "ThesisDataWrangling"
 date: '2022-10-10'
 output: md_document
 ---
+```{r, include=FALSE}
 #Notes
 #Adjust this to a week: how to figure out the internal
 #Calculate the returns. Average and plot them on the same figure --> smoother in ggplot 
@@ -17,7 +18,7 @@ output: md_document
 #Create 30 before and after 
 #Consider changing the date to a day before if you think there is an anticipate --> if it is obvious in the data you can make this case 
 #Group, 60 dummies, 60 dummies * group interaction = 121
-
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(collapse=TRUE, prompt=TRUE, eval=TRUE, message=F, include=T,comment=NULL, fig.height = 4, fig.width = 8)
@@ -324,13 +325,14 @@ Qualified_df <- master_df %>%
 Qualified_df
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.height=10}
 Disqualified_df %>%
     group_by(Index) %>%
     plot_time_series(Date, Returns,
                      .facet_ncol  = 3,     # 3-column layout
                      .interactive = FALSE, .title="Closing Price for Disqualified Automakers (faceted by index)")
-
+```
+```{r, echo=FALSE}
 sp <- Qualified_df %>%
     group_by(Index) %>%
     plot_time_series(Date, Returns,
@@ -339,7 +341,6 @@ sp <- Qualified_df %>%
 
 sp + geom_vline(xintercept = 2022-07-27, linetype="dotted", color = "red", size=1.5)
 ```
-
 
 ```{r, include=FALSE}
 #Averaging along all indexes

@@ -1,18 +1,4 @@
-\#Notes \#Adjust this to a week: how to figure out the internal
-\#Calculate the returns. Average and plot them on the same figure –&gt;
-smoother in ggplot \#Instead of just before and after: dummies for each
-day. Group, Each Day, Interaction between Group and Each Day
-\#Calculating the difference between each graph on a daily basis \#Rerun
-with three data points \#Start with daily one \#Ideally the stock
-returns are flat before and then it jumps up in group 1 \#If its not
-flat before…you worry its not a good control group \#Change the graph to
-returns because closing price is misleading \#If you plot them together,
-they should be on top of each other until the event \#Create 30 before
-and after \#Consider changing the date to a day before if you think
-there is an anticipate –&gt; if it is obvious in the data you can make
-this case \#Group, 60 dummies, 60 dummies \* group interaction = 121
-
-![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-7-1.png)
+![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-8-1.png)
 
 
     Call:
@@ -218,6 +204,7 @@ this case \#Group, 60 dummies, 60 dummies \* group interaction = 121
     Multiple R-squared:  0.4818,    Adjusted R-squared:  0.4147 
     F-statistic: 7.185 on 107 and 827 DF,  p-value: < 2.2e-16
 
-![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-10-1.png)![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-10-2.png)
+![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-11-1.png)
+![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-12-1.png)
 
-![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-13-1.png)![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-13-2.png)
+![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-15-1.png)![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-15-2.png)
