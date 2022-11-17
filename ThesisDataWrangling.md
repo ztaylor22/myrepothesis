@@ -1,4 +1,8 @@
+## Graph Comapring Stock Returns for Publically Traded Automakers by Grouping
+
 ![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-8-1.png)
+
+## Diff-in-Diff Regression Output
 
 
     Call:
@@ -203,6 +207,8 @@
     Residual standard error: 0.02161 on 827 degrees of freedom
     Multiple R-squared:  0.4818,    Adjusted R-squared:  0.4147 
     F-statistic: 7.185 on 107 and 827 DF,  p-value: < 2.2e-16
+
+## More visualizations
 
 ![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-11-1.png)
 ![](ThesisDataWrangling_files/figure-markdown_strict/unnamed-chunk-12-1.png)

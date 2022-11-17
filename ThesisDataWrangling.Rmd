@@ -289,6 +289,8 @@ master_df1 <- master_df %>%
 master_df1
 ```
 
+## Graph Comapring Stock Returns for Publically Traded Automakers by Grouping
+
 ```{r, echo=FALSE}
 #These two lines are for the geom_vlines
 date_range1 <- which(master_df1$Date %in% as.Date(c("2022-07-27")))
@@ -298,9 +300,10 @@ date_range <- which(master_df1$Date %in% as.Date(c("2022-08-04", "2022-08-16")))
 p <- ggplot(master_df1, aes(x=Date, y=MeanReturns, group=Group, color=Group)) + geom_line() + ylim(-0.07,0.07) + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups") +scale_color_discrete(labels=c('Unqualified','Qualified')) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range1]), color = "blue", size = 1) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range]), color = "black", size = 1) 
 
 #Adding labels to geom_vlines
-p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=7, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=7, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=7, fontface="bold", angle=15)
+p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=2, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=2, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=2, fontface="bold", angle=15)
 ```
 
+## Diff-in-Diff Regression Output
 
 ```{r, echo=FALSE}
 #Diff-in-Diff Regression
@@ -324,6 +327,8 @@ Qualified_df <- master_df %>%
 
 Qualified_df
 ```
+
+## More visualizations
 
 ```{r, echo=FALSE, fig.height=10}
 Disqualified_df %>%
