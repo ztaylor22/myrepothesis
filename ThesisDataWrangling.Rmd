@@ -36,7 +36,7 @@ lapply(mypacks, library, character.only=TRUE)  # load all packages
 #Fixed Inputs
 stock_list <- c("TSLA", "TM", "POAHY", "VWAPY", "MBGAF", "GM", "F", "BMWYY", "STLA", "HMC", "RACE", "RIVN", "HYMTF", "NIO", "LCID", "TTM", "NSANY", "VLVLY")
 from_date <- "2022-7-6"
-to_date <- "2022-9-01"
+to_date <- "2022-9-6"
 frequency <- "daily"
 
 TwoModels <- c("TSLA","GM","F") #Moved HMC to ZeroModels. Can reconsider this in my thesis potentially
@@ -300,7 +300,7 @@ date_range <- which(master_df1$Date %in% as.Date(c("2022-08-04", "2022-08-16")))
 p <- ggplot(master_df1, aes(x=Date, y=MeanReturns, group=Group, color=Group)) + geom_line() + ylim(-0.07,0.07) + labs(x="Date", y="Stock Returns") + ggtitle("Stock Returns For Qualified and Unqualified Groups") +scale_color_discrete(labels=c('Unqualified','Qualified')) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range1]), color = "blue", size = 1) + geom_vline(xintercept = as.numeric(master_df1$Date[date_range]), color = "black", size = 1) 
 
 #Adding labels to geom_vlines
-p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=2, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=2, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=2, fontface="bold", angle=15)
+p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=5, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=5, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=5, fontface="bold", angle=15)
 ```
 
 ## Diff-in-Diff Regression Output
