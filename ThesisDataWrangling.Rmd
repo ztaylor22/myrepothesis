@@ -302,12 +302,21 @@ p <- ggplot(master_df1, aes(x=Date, y=MeanReturns, group=Group, color=Group)) + 
 #Adding labels to geom_vlines
 p + annotate("text", x=as.Date("2022-07-27"), y=0.06, label="Announcement", color="blue", size=5, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-04"), y=0.06, label="Dems Unified", color="black", size=5, fontface="bold", angle=15) + annotate("text", x=as.Date("2022-08-16"), y=0.06, label="Bill Signed", color="black", size=5, fontface="bold", angle=15)
 ```
-
-## Diff-in-Diff Regression Output
+## Diff-in-Diff Regression Output 0
 
 ```{r, echo=FALSE}
 #Diff-in-Diff Regression
-didreg1 = lm(Returns ~ Group+N15+N14+N13+N12+N11+N10+N09+N08+N07+N06+N05+N04+N03+N02+N01+Event0+P01+P02+P03+P04+P05+P06+P07+Event1+P09+P10+P11+P12+P13+P14+P15+Event2+P17+P18+P19+P20+P17+P18+P19+P20+P21+P22+P23+P24+P25+GroupxN15+GroupxN14+GroupxN13+GroupxN12+GroupxN11+GroupxN10+GroupxN09+GroupxN08+GroupxN07+GroupxN06+GroupxN05+GroupxN04+GroupxN03+GroupxN02+GroupxN01+GroupxEvent0+GroupxP01+GroupxP02+GroupxP03+GroupxP04+GroupxP05+GroupxP06+GroupxP07+GroupxEvent1+GroupxP09+GroupxP10+GroupxP11+GroupxP12+GroupxP13+GroupxP14+GroupxP15+GroupxEvent2+GroupxP17+GroupxP18+GroupxP19+GroupxP20+GroupxP21+GroupxP22+GroupxP23+GroupxP24+GroupxP25, data = master_df) 
+didreg0 = lm(Returns ~ AfterEvent0+Group+GroupxAfterEvent0, data = master_df) 
+summary(didreg0) #Review the results 
+#What other features should I include?
+```  
+
+
+## Diff-in-Diff Regression Output 1
+
+```{r, echo=FALSE}
+#Diff-in-Diff Regression
+didreg1 = lm(Returns ~ Group+N15+N14+N13+N12+N11+N10+N09+N08+N07+N06+N05+N04+N03+N02+N01+Event0+P01+P02+P03+P04+P05+P06+P07+Event1+P09+P10+P11+P12+P13+P14+P15+Event2+P17+P18+P19+P20+P17+P18+P19+P20+P21+P22+P23+P24+P25+P26+P27+GroupxN15+GroupxN14+GroupxN13+GroupxN12+GroupxN11+GroupxN10+GroupxN09+GroupxN08+GroupxN07+GroupxN06+GroupxN05+GroupxN04+GroupxN03+GroupxN02+GroupxN01+GroupxEvent0+GroupxP01+GroupxP02+GroupxP03+GroupxP04+GroupxP05+GroupxP06+GroupxP07+GroupxEvent1+GroupxP09+GroupxP10+GroupxP11+GroupxP12+GroupxP13+GroupxP14+GroupxP15+GroupxEvent2+GroupxP17+GroupxP18+GroupxP19+GroupxP20+GroupxP21+GroupxP22+GroupxP23+GroupxP24+GroupxP25+GroupxP26+GroupxP27, data = master_df) 
 summary(didreg1) #Review the results 
 #What other features should I include?
 ```  
